@@ -1,73 +1,74 @@
-# React + TypeScript + Vite
+# 🗺 CurioMap
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Mapa cultural personal: marca en un mapa los lugares asociados a libros, películas, series, obras de arte y hechos históricos, y guárdalos como un diario visual con tus propias notas.
 
-Currently, two official plugins are available:
+> 🚧 Proyecto personal en desarrollo, hecho para aprender. Cualquier cosa puede cambiar.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Idea
 
-## React Compiler
+Cuando lees una novela o ves una película, los lugares importan: Los Ángeles en *Blade Runner*, La Mancha en *El Quijote*, Madrid y el *Guernica*. CurioMap te deja construir tu propio mapa de todo lo que consumes, con:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Marcadores por categoría (libro, película/serie, arte, historia)
+- Ficha de cada lugar: imagen, ubicación, resumen y notas personales
+- Biblioteca con listas de "visto" y "pendiente"
+- Filtros y búsqueda
+- Resúmenes generados con IA (fase posterior)
 
-## Expanding the ESLint configuration
+## Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+**Frontend (este repositorio)**
+- React + TypeScript + Vite
+- Tailwind CSS
+- Leaflet / react-leaflet (mapa con OpenStreetMap)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+**Previsto**
+- Firebase (Auth, Firestore, Storage)
+- Backend en Python con FastAPI (repositorio aparte) para enriquecer marcadores con Wikipedia, TMDB y una API de IA
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Estado
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- [x] Proyecto base con Vite + React + TypeScript
+- [ ] Tipos y datos de prueba
+- [ ] Mapa con marcadores (MapView)
+- [ ] Tarjeta de detalle (MarkerDetailCard)
+- [ ] Layout: header / sidebar
+- [ ] Formulario para añadir marcadores
+- [ ] Filtros y búsqueda
+- [ ] Backend Python + IA
+- [ ] Login y persistencia con Firebase
+- [ ] Biblioteca y estadísticas
+
+## Cómo ejecutarlo
+
+Requisitos: Node.js 18 o superior y Git.
+
+```bash
+git clone https://github.com/elmarkitos/curio-map.git
+cd curio-map
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+La app se abre en `http://localhost:5173`.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Variables de entorno
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Cuando se conecte Firebase, copia `.env.example` a `.env.local` y rellena tus propias claves. Ese archivo no se sube al repositorio.
+
+## Estructura prevista
+
 ```
+src/
+├── components/   # MapView, MarkerDetailCard, AddMarkerForm...
+├── pages/        # pantallas completas
+├── services/     # Firebase y llamadas al backend
+├── hooks/        # lógica reutilizable (filtros, etc.)
+├── data/         # datos de prueba
+├── types/        # tipos TypeScript compartidos
+├── App.tsx
+└── main.tsx
+```
+
+## Licencia
+
+Por definir.
