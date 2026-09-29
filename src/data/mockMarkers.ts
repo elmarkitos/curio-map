@@ -1,0 +1,41 @@
+import type { Marker } from '../types'
+
+export const mockMarkers: Marker[] = [
+  {
+    id: '1',
+    title: 'Blade Runner',
+    category: 'movie',
+    lat: 34.0522,
+    lng: -118.2437,
+    locationName: 'Los Ángeles, EE. UU.',
+    summary: 'Ciencia ficción neo-noir ambientada en un Los Ángeles distópico.',
+    rating: 8.0,
+    year: '1982',
+    notes: '',
+    status: 'seen',
+  },
+  {
+    id: '2',
+    title: 'Don Quijote de la Mancha',
+    category: 'book',
+    lat: 39.4028,
+    lng: -3.1242,
+    locationName: 'Campo de Criptana, España',
+    summary: 'Las aventuras del hidalgo que confunde molinos con gigantes.',
+    year: '1605',
+    notes: '',
+    status: 'pending',
+  },
+  {
+    id: '3',
+    title: 'Guernica',
+    category: 'art',
+    lat: 40.4082,
+    lng: -3.6943,
+    locationName: 'Museo Reina Sofía, Madrid',
+    summary: 'Obra de Picasso sobre el bombardeo de Gernika en 1937.',
+    year: '1937',
+    notes: 'Ver en persona.',
+    status: 'pending',
+  },
+]
