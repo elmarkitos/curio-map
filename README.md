@@ -29,7 +29,7 @@ Cuando lees una novela o ves una película, los lugares importan: Los Ángeles e
 
 - [x] Proyecto base con Vite + React + TypeScript
 - [ ] Tipos y datos de prueba
-- [ ] Mapa con marcadores (MapView)
+- [x] Mapa con marcadores (MapView)
 - [ ] Tarjeta de detalle (MarkerDetailCard)
 - [ ] Layout: header / sidebar
 - [ ] Formulario para añadir marcadores
