@@ -1,10 +1,13 @@
 // src/App.tsx
 import React, { useState } from 'react'
 import { MapView } from './components/MapView'
+import { LibraryView } from './components/LibraryView'
 import { MarkerDetailCard } from './components/MarkerDetailCard'
 import { Header } from './components/Header'
 import { FilterBar } from './components/FilterBar'
 import { AddMarkerForm } from './components/AddMarkerForm'
+import { StatsModal } from './components/StatsModal'
+import { SettingsModal } from './components/SettingsModal'
 import { useMarkerFilters } from './hooks/useMarkerFilters'
 import type { Filters, Marker, NewMarkerInput, Status } from './types'
 
@@ -68,17 +71,17 @@ const INITIAL_MARKERS: Marker[] = [
 export default function App(): React.JSX.Element {
   const [markers, setMarkers] = useState<Marker[]>(INITIAL_MARKERS)
   const [selectedId, setSelectedId] = useState<string | null>(null)
+  const [view, setView] = useState<'map' | 'library'>('map')
   const [isAddOpen, setIsAddOpen] = useState<boolean>(false)
+  const [isStatsOpen, setIsStatsOpen] = useState<boolean>(false)
+  const [isSettingsOpen, setIsSettingsOpen] = useState<boolean>(false)
   const [filters, setFilters] = useState<Filters>({
     query: '',
     categories: [],
     status: 'all',
   })
 
-  // Marcadores pasados por el hook de filtrado (búsqueda, categoría y estado)
   const filteredMarkers = useMarkerFilters(markers, filters)
-
-  // Marcador seleccionado actualmente (si existe)
   const selectedMarker = markers.find((m) => m.id === selectedId) ?? null
 
   const handleAddMarker = (input: NewMarkerInput): void => {
@@ -110,35 +113,60 @@ export default function App(): React.JSX.Element {
   }
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden bg-neutral-950 font-sans">
-      {/* Barra superior con filtros integrados en el centro */}
-      <Header onAddClick={() => setIsAddOpen(true)}>
+    <div className="flex flex-col h-screen w-screen overflow-hidden bg-neutral-50 dark:bg-neutral-950 font-sans">
+      {/* Header con alternador de vista y filtros */}
+      <Header
+        view={view}
+        onViewChange={setView}
+        onAddClick={() => setIsAddOpen(true)}
+        onStatsClick={() => setIsStatsOpen(true)}
+        onSettingsClick={() => setIsSettingsOpen(true)}
+      >
         <FilterBar filters={filters} onChange={setFilters} />
       </Header>
 
-      {/* Mapa a pantalla completa con marcadores filtrados */}
-      <main className="w-full h-full">
-        <MapView
-          markers={filteredMarkers}
-          selectedId={selectedId}
-          onMarkerClick={(id) => setSelectedId(id)}
+      {/* Contenedor principal: muestra MapView o LibraryView según el estado */}
+      <main className="relative flex-1 min-h-0 isolate">
+        {view === 'map' ? (
+          <MapView
+            markers={filteredMarkers}
+            selectedId={selectedId}
+            onMarkerClick={(id) => setSelectedId(id)}
+          />
+        ) : (
+          <LibraryView
+            markers={filteredMarkers}
+            selectedId={selectedId}
+            onSelect={(id) => setSelectedId(id)}
+          />
+        )}
+
+        {/* Panel lateral / Bottom Sheet accesible en ambas vistas */}
+        <MarkerDetailCard
+          marker={selectedMarker}
+          onClose={() => setSelectedId(null)}
+          onNotesChange={handleNotesChange}
+          onStatusChange={handleStatusChange}
+          onDelete={handleDeleteMarker}
         />
       </main>
 
-      {/* Panel lateral / Bottom sheet de detalle */}
-      <MarkerDetailCard
-        marker={selectedMarker}
-        onClose={() => setSelectedId(null)}
-        onNotesChange={handleNotesChange}
-        onStatusChange={handleStatusChange}
-        onDelete={handleDeleteMarker}
-      />
-
-      {/* Modal para añadir nuevo marcador */}
+      {/* Modal para añadir nuevos lugares */}
       <AddMarkerForm
         isOpen={isAddOpen}
         onClose={() => setIsAddOpen(false)}
         onSubmit={handleAddMarker}
+      />
+
+      <StatsModal
+        isOpen={isStatsOpen}
+        onClose={() => setIsStatsOpen(false)}
+        markers={markers}
+      />
+
+      <SettingsModal
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
       />
     </div>
   )

@@ -80,16 +80,16 @@ export const MarkerDetailCard: React.FC<MarkerDetailCardProps> = ({
 
   return (
     <>
-      {/* Fondo oscuro para móvil/backdrop */}
+      {/* Fondo oscuro para móvil confinado al área del <main> */}
       <div
         onClick={onClose}
-        className="fixed inset-0 bg-neutral-950/30 backdrop-blur-xs z-40 md:hidden transition-opacity"
+        className="absolute inset-0 bg-neutral-950/30 backdrop-blur-xs z-30 md:hidden transition-opacity"
       />
 
-      {/* Panel contenedor: Bottom Sheet en móvil, Sidebar deslizante desde la derecha en Desktop */}
-      <aside className="fixed bottom-0 inset-x-0 max-h-[85vh] md:max-h-none md:inset-y-0 md:right-0 md:left-auto md:w-[420px] z-50 flex flex-col bg-white dark:bg-neutral-900 shadow-2xl border-t md:border-t-0 md:border-l border-neutral-200 dark:border-neutral-800 rounded-t-2xl md:rounded-none animate-in slide-in-from-bottom md:slide-in-from-right duration-300 ease-out transition-transform overflow-hidden">
-        {/* Cabecera visual (Imagen o Degradado de relleno) */}
-        <div className="relative h-48 sm:h-52 w-full shrink-0 overflow-hidden bg-neutral-100 dark:bg-neutral-950">
+      {/* Panel contenedor absoluto dentro del <main> */}
+      <aside className="absolute bottom-0 inset-x-0 max-h-[85%] md:max-h-none md:inset-y-0 md:right-0 md:left-auto md:w-[420px] z-40 flex flex-col bg-white dark:bg-neutral-900 shadow-2xl border-t md:border-t-0 md:border-l border-neutral-200 dark:border-neutral-800 rounded-t-2xl md:rounded-none animate-in slide-in-from-bottom md:slide-in-from-right duration-300 ease-out transition-transform overflow-hidden">
+        {/* Cabecera visual (Imagen o degradado) */}
+        <div className="relative h-44 sm:h-52 w-full shrink-0 overflow-hidden bg-neutral-100 dark:bg-neutral-950">
           {marker.imageUrl ? (
             <img
               src={marker.imageUrl}
@@ -110,25 +110,19 @@ export const MarkerDetailCard: React.FC<MarkerDetailCardProps> = ({
             aria-label="Cerrar detalle"
             className="absolute top-3.5 right-3.5 h-8 w-8 rounded-full bg-neutral-900/60 dark:bg-black/60 text-white hover:bg-neutral-900/80 transition-all flex items-center justify-center backdrop-blur-xs cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-white"
           >
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
 
-          {/* Indicador de tirador para Bottom Sheet (móvil) */}
+          {/* Indicador de tirador para Bottom Sheet */}
           <div className="absolute top-2 inset-x-0 flex justify-center md:hidden pointer-events-none">
             <div className="h-1.5 w-10 bg-neutral-300/80 dark:bg-neutral-600/80 rounded-full" />
           </div>
         </div>
 
-        {/* Contenido con Scroll */}
+        {/* Contenido scrolleable */}
         <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-5 text-neutral-800 dark:text-neutral-200">
-          {/* Etiquetas superiores */}
           <div className="flex flex-wrap items-center gap-2">
             <span
               className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium border ${meta.tagBg} ${meta.textCol}`}
@@ -150,7 +144,6 @@ export const MarkerDetailCard: React.FC<MarkerDetailCardProps> = ({
             )}
           </div>
 
-          {/* Título y Ubicación */}
           <div className="space-y-1.5">
             <h2 className="text-xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-50 leading-snug">
               {marker.title}
@@ -164,7 +157,6 @@ export const MarkerDetailCard: React.FC<MarkerDetailCardProps> = ({
             </div>
           </div>
 
-          {/* Resumen */}
           <div className="space-y-1">
             <h3 className="text-xs font-semibold text-neutral-400 dark:text-neutral-500 uppercase tracking-wider">
               Resumen
@@ -174,7 +166,6 @@ export const MarkerDetailCard: React.FC<MarkerDetailCardProps> = ({
             </p>
           </div>
 
-          {/* Notas editables (Notion style) */}
           <div className="space-y-1.5">
             <label
               htmlFor="marker-notes-input"
@@ -187,15 +178,14 @@ export const MarkerDetailCard: React.FC<MarkerDetailCardProps> = ({
               rows={4}
               value={marker.notes}
               onChange={(e) => onNotesChange(marker.id, e.target.value)}
-              placeholder="Escribe tus notas, reflexiones o pendientes aquí..."
+              placeholder="Escribe tus notas o reflexiones..."
               className="w-full text-sm bg-neutral-50 dark:bg-neutral-800/60 border border-neutral-200 dark:border-neutral-700/80 rounded-lg p-3 text-neutral-900 dark:text-neutral-100 placeholder-neutral-400 focus:outline-hidden focus:ring-2 focus:ring-neutral-900 dark:focus:ring-white transition-all resize-y"
             />
           </div>
         </div>
 
-        {/* Acciones del pie */}
+        {/* Acciones */}
         <div className="p-4 sm:p-5 border-t border-neutral-200 dark:border-neutral-800 bg-neutral-50/50 dark:bg-neutral-900/50 flex items-center justify-between gap-3">
-          {/* Botón Alternar Estado */}
           <button
             type="button"
             onClick={handleToggleStatus}
@@ -213,7 +203,6 @@ export const MarkerDetailCard: React.FC<MarkerDetailCardProps> = ({
             {isSeen ? 'Completado' : 'Pendiente'}
           </button>
 
-          {/* Botón Eliminar con confirmación contextual */}
           {showConfirmDelete ? (
             <div className="flex items-center gap-1.5">
               <button
